@@ -1,0 +1,10 @@
+l1 :- \rename_{no1, t1, mc1, a1} loan;
+l2 :- \rename_{no2, t2, mc2, a2} loan;
+
+smaller_loans :- \project_{no1} (
+    l1 \join_{a1 < a2} l2
+);
+
+\rename_{loanNo} (
+    (\project_{no} loan) \diff (\rename_{no} smaller_loans)
+);

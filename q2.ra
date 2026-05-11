@@ -1,0 +1,9 @@
+(
+    \rename_{name} \project_{cname} (
+        borrower \join_{lno = no} (\select_{type = 'jumbo mortgage'} loan)
+    )
+)
+\union
+(
+    \project_{name} (\select_{credit >= 750} customer)
+);

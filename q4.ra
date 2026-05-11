@@ -1,0 +1,8 @@
+b1 :- \rename_{cname1, lno1, due1} borrower;
+b2 :- \rename_{cname2, lno2, due2} borrower;
+
+shared_loans :- \select_{cname1 < cname2} (
+    b1 \join_{lno1 = lno2} b2
+);
+
+\rename_{name1, name2} \project_{cname1, cname2} shared_loans;

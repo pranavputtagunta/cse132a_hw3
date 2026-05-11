@@ -1,0 +1,14 @@
+js_cust :- \select_{name = 'John Smith'} customer;
+js_loans :- js_cust \join_{name = cname} borrower \join_{lno = no} loan;
+
+has_loans :- \rename_{borrowedAmount} \project_{totalAmount} (
+    \rename_{name, totalAmount} \aggr_{name: sum(amount)} js_loans
+);
+
+no_loans :- \rename_{borrowedAmount} \project_{0} (
+    (\project_{name} js_cust)
+    \diff
+    (\project_{name} (\rename_{name, credit} (js_cust \join_{name = cname} borrower)))
+);
+
+has_loans \union no_loans;
