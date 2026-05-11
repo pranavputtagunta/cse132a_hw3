@@ -1,14 +1,13 @@
-js_cust :- \select_{name = 'John Smith'} customer;
-js_loans :- js_cust \join_{name = cname} borrower \join_{lno = no} loan;
+js_borrower :- \select_{cname = 'John Smith'} borrower;
+js_loans :- \project_{no, minCredit} (js_borrower \join_{lno = no} loan);
 
-has_loans :- \rename_{borrowedAmount} \project_{totalAmount} (
-    \rename_{name, totalAmount} \aggr_{name: sum(amount)} js_loans
+l1 :- \rename_{no1, mc1} js_loans;
+l2 :- \rename_{no2, mc2} js_loans;
+
+smaller_js_loans :- \project_{no1} (
+    l1 \join_{mc1 < mc2} l2
 );
 
-no_loans :- \rename_{borrowedAmount} \project_{0} (
-    (\project_{name} js_cust)
-    \diff
-    (\project_{name} (\rename_{name, credit} (js_cust \join_{name = cname} borrower)))
+\rename_{loanNo} (
+    (\project_{no} js_loans) \diff (\rename_{no} smaller_js_loans)
 );
-
-has_loans \union no_loans;

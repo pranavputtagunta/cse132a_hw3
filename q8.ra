@@ -8,7 +8,7 @@ has_loans :- \rename_{borrowedAmount} \project_{totalAmount} (
 no_loans :- \rename_{borrowedAmount} \project_{0} (
     (\project_{name} js_cust)
     \diff
-    (\project_{name} (\rename_{name, credit} (js_cust \join_{name = cname} borrower)))
+    (\project_{name} (js_cust \join_{name = cname} borrower))
 );
 
 has_loans \union no_loans;
